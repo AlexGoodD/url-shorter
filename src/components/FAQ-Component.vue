@@ -1,10 +1,10 @@
 <template>
   <div class="relative inline-block group">
     <button
-      class="relative w-12 h-12 text-sm font-semibold text-white bg-indigo-600/90 hover:bg-indigo-700/90 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 overflow-hidden rounded-lg"
+      class="relative w-12 h-12 text-sm font-semibold text-white bg-blue-600/90 hover:bg-blue-700/90 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-300 overflow-hidden rounded-lg"
     >
       <div
-        class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-xl group-hover:opacity-75 transition-opacity rounded-lg"
+        class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-pink-500/20 blur-xl group-hover:opacity-75 transition-opacity rounded-lg"
       ></div>
 
       <span class="relative flex items-center justify-center h-full">
@@ -26,8 +26,8 @@
         class="relative p-4 bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-md rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(79,70,229,0.15)]"
       >
         <div class="flex items-center gap-3 mb-2">
-          <div class="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-500/20">
-            <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-indigo-400">
+          <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500/20">
+            <svg viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4 text-blue-400">
               <path
                 clip-rule="evenodd"
                 d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -46,7 +46,7 @@
         </div>
 
         <div
-          class="absolute inset-0 rounded-2xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 blur-xl opacity-50"
+          class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/10 to-blue-500/10 blur-xl opacity-50"
         ></div>
 
         <div

@@ -2,7 +2,12 @@
   <div>
     <ul>
       <li v-for="url in urls" :key="url.id">
-        <a :href="url.originalUrl" target="_blank">{{ url.shortUrl }}</a>
+        <span
+          >Original: <a :href="url.originalUrl" target="_blank">{{ url.originalUrl }}</a></span
+        >
+        <span>
+          | Short: <a :href="url.shortUrl" target="_blank">{{ url.shortUrl }}</a></span
+        >
       </li>
     </ul>
   </div>

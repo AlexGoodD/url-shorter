@@ -1,5 +1,7 @@
 <template>
-  <div>Redirecting...</div>
+  <div>
+    <p>Redirecting you to your destination... Please wait.</p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -12,16 +14,25 @@ const route = useRoute()
 const router = useRouter()
 
 onMounted(async () => {
-  const shortUrl = route.params.shortUrl as string
-  const q = query(collection(db, 'urls'), where('shortUrl', '==', shortUrl))
-  const querySnapshot = await getDocs(q)
+  const shortCode = route.params.shortUrl as string
+  console.log('ShortCode received:', shortCode) // Depuración
 
-  if (!querySnapshot.empty) {
-    const doc = querySnapshot.docs[0]
-    const originalUrl = doc.data().originalUrl
-    window.location.href = originalUrl
-  } else {
-    router.push({ name: 'home' })
+  try {
+    const q = query(collection(db, 'urls'), where('shortCode', '==', shortCode))
+    const querySnapshot = await getDocs(q)
+
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0]
+      const originalUrl = doc.data().originalUrl
+      console.log('Redirecting to:', originalUrl) // Depuración
+      window.location.href = originalUrl
+    } else {
+      console.error(`Short URL not found for: ${shortCode}`)
+      router.push({ name: 'notfound' })
+    }
+  } catch (error) {
+    console.error('Error during redirect:', error)
+    router.push({ name: 'error' })
   }
 })
 </script>

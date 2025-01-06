@@ -4,7 +4,7 @@
       <h1 class="title">URL Shorter</h1>
     </div>
     <URLShortener />
-    <URLList />
+    <!--<URLList />-->
     <div class="FAQ">
       <FAQ />
     </div>
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import URLShortener from '@/components/URLShortener.vue'
-import URLList from '@/components/URLList.vue'
+//import URLList from '@/components/URLList.vue'
 import FAQ from '@/components/FAQ-Component.vue'
 </script>
 
