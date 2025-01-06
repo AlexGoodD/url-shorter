@@ -2,10 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/Home-page.vue'
 import ErrorView from '@/views/ErrorPage.vue'
 import NotFoundView from '@/views/NotFound.vue'
+import RedirectView from '@/views/Redirect-View.vue'
 const routes = [
   {
     path: '/:shortUrl',
-    component: () => import('@/views/Redirect-View.vue'),
+    component: RedirectView,
   },
   {
     path: '/',
@@ -26,5 +27,10 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+router.beforeEach((to, from, next) => {
+  console.log('Routing to:', to.path) // Muestra las rutas que Vue intenta cargar
+  console.log('Params:', to.params) // Muestra los parámetros de la ruta
+  next()
 })
 export default router

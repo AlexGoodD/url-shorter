@@ -6,7 +6,6 @@
       </div>
       <ButtonShortComponent :shortenUrl="shortenUrl" />
     </div>
-
     <div v-if="shortUrl">
       <p>
         Short URL:
@@ -16,66 +15,49 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
 import { ref } from 'vue'
 import { db } from '@/firebase'
 import { collection, addDoc, getDocs, query, where, serverTimestamp } from 'firebase/firestore'
 import { nanoid } from 'nanoid'
 import ButtonShortComponent from '@/components/ButtonShort-Component.vue'
-
 const url = ref('')
 const shortUrl = ref('')
-const baseShortDomain = 'https://url-shorter-lemon.vercel.app/' // Incluye barra final
-
+const baseShortDomain = 'https://url-shorter-lemon.vercel.app/'
 const shortenUrl = async () => {
   if (!url.value) {
     alert('Please enter a valid URL.')
     return
   }
-
-  // Validación de URL
   const urlPattern = new RegExp(
-    '^(https?:\\/\\/)?' + // Protocolo
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // Dominio
-      '((\\d{1,3}\\.){3}\\d{1,3}))' + // IP (v4)
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // Puerto y path
-      '(\\?[;&a-z\\d%_.~+=-]*)?' + // Query
+    '^(https?:\\/\\/)?' +
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
+      '((\\d{1,3}\\.){3}\\d{1,3}))' +
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
+      '(\\?[;&a-z\\d%_.~+=-]*)?' +
       '(\\#[-a-z\\d_]*)?$',
     'i',
   )
-
   if (!urlPattern.test(url.value)) {
     alert('Please enter a valid URL.')
     return
   }
-
-  const slug = nanoid(8) // Genera un slug único
-
-  // Verifica si el slug ya existe en Firestore
+  const slug = nanoid(8)
   const q = query(collection(db, 'urls'), where('shortCode', '==', slug))
   const existingSlug = await getDocs(q)
-
   if (!existingSlug.empty) {
     alert('This custom slug is already taken. Please choose another one.')
     return
   }
-
   const fullShortUrl = `${baseShortDomain}${slug}`
-
   await addDoc(collection(db, 'urls'), {
     originalUrl: url.value,
-    shortCode: slug, // Guarda el slug como código corto
+    shortCode: slug,
     createdAt: serverTimestamp(),
   })
-
-  console.log('Short URL created:', slug)
-  console.log('Short URL complete created:', fullShortUrl)
-
   shortUrl.value = fullShortUrl
   url.value = ''
 }
-
 const copyToClipboard = () => {
   if (shortUrl.value) {
     navigator.clipboard.writeText(shortUrl.value)
@@ -83,7 +65,6 @@ const copyToClipboard = () => {
   }
 }
 </script>
-
 <style scoped>
 .input-button {
   display: flex;
