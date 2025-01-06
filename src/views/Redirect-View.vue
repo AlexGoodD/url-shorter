@@ -6,18 +6,16 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { db } from '@/firebase'
-import { collection, query, where, getDocs } from 'firebase/firestore'
+import { getOriginalUrl } from '@/services/redirectService'
+
 const route = useRoute()
 const router = useRouter()
+
 onMounted(async () => {
   const shortCode = route.params.shortUrl as string
   try {
-    const q = query(collection(db, 'urls'), where('shortCode', '==', shortCode))
-    const querySnapshot = await getDocs(q)
-    if (!querySnapshot.empty) {
-      const doc = querySnapshot.docs[0]
-      const originalUrl = doc.data().originalUrl
+    const originalUrl = await getOriginalUrl(shortCode)
+    if (originalUrl) {
       window.location.href = originalUrl
     } else {
       console.error(`Short URL not found for: ${shortCode}`)

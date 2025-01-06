@@ -6,27 +6,23 @@
       </div>
       <ButtonShortComponent :shortenUrl="shortenUrlHandler" />
     </div>
-    <div v-if="shortUrl">
-      <p>
-        Short URL:
-        <a :href="shortUrl" target="_blank" class="button">{{ shortUrl }}</a>
-      </p>
-      <button @click="copyToClipboard">Copy to Clipboard</button>
-    </div>
   </div>
 </template>
+
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, defineEmits } from 'vue'
 import { shortenUrl } from '@/services/urlShortenerService'
 import ButtonShortComponent from '@/components/ButtonShort-Component.vue'
 
 const url = ref('')
-const shortUrl = ref('')
+const emit = defineEmits(['shortened'])
 
 const shortenUrlHandler = async () => {
   try {
-    shortUrl.value = await shortenUrl(url.value)
+    const shortenedUrl = await shortenUrl(url.value)
     url.value = ''
+    emit('shortened', shortenedUrl)
+    console.log('Shortened URL:', shortenedUrl)
   } catch (error) {
     if (error instanceof Error) {
       alert(error.message)
@@ -35,14 +31,8 @@ const shortenUrlHandler = async () => {
     }
   }
 }
-
-const copyToClipboard = () => {
-  if (shortUrl.value) {
-    navigator.clipboard.writeText(shortUrl.value)
-    alert('URL copied to clipboard!')
-  }
-}
 </script>
+
 <style scoped>
 .input-button {
   display: flex;
@@ -59,20 +49,6 @@ const copyToClipboard = () => {
   border-radius: 10px;
   overflow: hidden;
 }
-.prefix {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  font-size: 15px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  height: 100%;
-  width: 70px;
-  font-weight: 600;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-radius: 10px 0px 0px 10px;
-}
 .myinput-link {
   display: flex;
   align-items: center;
@@ -84,6 +60,7 @@ const copyToClipboard = () => {
   padding: 0px 10px;
   height: 100%;
   width: 100%;
+  color: #000;
   background-color: #fff;
   font-size: 15px;
 }
@@ -99,35 +76,5 @@ const copyToClipboard = () => {
   border-radius: 0px 10px 10px 0px;
   cursor: pointer;
   position: relative;
-}
-.tooltip {
-  position: absolute;
-  top: -40px;
-  right: -10px;
-  opacity: 0;
-  background-color: #ffe53b;
-  background-image: linear-gradient(147deg, #f0f0f0 0%, #000000 74%);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition-duration: 0.2s;
-  pointer-events: none;
-  letter-spacing: 0.5px;
-  z-index: 10;
-}
-.tooltip::before {
-  position: absolute;
-  content: '';
-  width: 10px;
-  height: 10px;
-  background-color: #000000;
-  background-size: 1000%;
-  background-position: center;
-  transform: rotate(45deg);
-  bottom: -15%;
-  transition-duration: 0.3s;
 }
 </style>
