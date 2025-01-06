@@ -4,7 +4,7 @@
       <div class="container">
         <input v-model="url" class="myinput-link" placeholder="Enter URL" />
       </div>
-      <ButtonShortComponent :shortenUrl="shortenUrl" />
+      <ButtonShortComponent :shortenUrl="shortenUrlHandler" />
     </div>
     <div v-if="shortUrl">
       <p>
@@ -17,47 +17,25 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import { db } from '@/firebase'
-import { collection, addDoc, getDocs, query, where, serverTimestamp } from 'firebase/firestore'
-import { nanoid } from 'nanoid'
+import { shortenUrl } from '@/services/urlShortenerService'
 import ButtonShortComponent from '@/components/ButtonShort-Component.vue'
+
 const url = ref('')
 const shortUrl = ref('')
-const baseShortDomain = 'https://url-shorter-lemon.vercel.app/'
-const shortenUrl = async () => {
-  if (!url.value) {
-    alert('Please enter a valid URL.')
-    return
+
+const shortenUrlHandler = async () => {
+  try {
+    shortUrl.value = await shortenUrl(url.value)
+    url.value = ''
+  } catch (error) {
+    if (error instanceof Error) {
+      alert(error.message)
+    } else {
+      alert('An unknown error occurred')
+    }
   }
-  const urlPattern = new RegExp(
-    '^(https?:\\/\\/)?' +
-      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
-      '((\\d{1,3}\\.){3}\\d{1,3}))' +
-      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
-      '(\\?[;&a-z\\d%_.~+=-]*)?' +
-      '(\\#[-a-z\\d_]*)?$',
-    'i',
-  )
-  if (!urlPattern.test(url.value)) {
-    alert('Please enter a valid URL.')
-    return
-  }
-  const slug = nanoid(8)
-  const q = query(collection(db, 'urls'), where('shortCode', '==', slug))
-  const existingSlug = await getDocs(q)
-  if (!existingSlug.empty) {
-    alert('This custom slug is already taken. Please choose another one.')
-    return
-  }
-  const fullShortUrl = `${baseShortDomain}${slug}`
-  await addDoc(collection(db, 'urls'), {
-    originalUrl: url.value,
-    shortCode: slug,
-    createdAt: serverTimestamp(),
-  })
-  shortUrl.value = fullShortUrl
-  url.value = ''
 }
+
 const copyToClipboard = () => {
   if (shortUrl.value) {
     navigator.clipboard.writeText(shortUrl.value)
