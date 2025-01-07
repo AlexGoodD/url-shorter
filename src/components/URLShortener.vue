@@ -48,6 +48,7 @@ const shortenUrlHandler = async () => {
   border: 2px solid #000000;
   border-radius: 10px;
   overflow: hidden;
+  width: 100%;
 }
 .myinput-link {
   display: flex;

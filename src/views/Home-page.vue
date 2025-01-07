@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div>
-      <h1 class="title">URL Shorter</h1>
+      <h1 class="title">URL Shortener</h1>
     </div>
     <URLShortener @shortened="shortenUrlHandler" />
     <div class="FAQ">
@@ -56,7 +56,8 @@ const shortenUrlHandler = async (url: string) => {
 .FAQ {
   position: absolute;
   bottom: 20px;
-  right: 150px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .loading-bar {
   top: 10px;

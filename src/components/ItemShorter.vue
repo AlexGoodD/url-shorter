@@ -37,6 +37,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+h2,
+p,
+a {
+  color: black;
+}
 .modal {
   position: fixed;
   top: 0;
@@ -83,6 +88,7 @@ onMounted(() => {
   background: none;
   cursor: pointer;
   transition: all 0.5s ease;
+  color: rgb(61, 61, 61);
 }
 
 .close-button:hover {
